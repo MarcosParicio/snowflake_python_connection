@@ -6,7 +6,6 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
-ipykernel = "*"
 snowflake-connector-python = "*"
 snowflake-sqlalchemy = "*"
 sqlalchemy = "*"
