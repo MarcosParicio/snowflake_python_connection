@@ -1,5 +1,7 @@
 from snowflake.sqlalchemy import URL
 from sqlalchemy import create_engine
+# Escribir en una tabla Snowflake
+from snowflake.connector.pandas_tools import pd_writer
 
 import pandas as pd
 
@@ -32,17 +34,15 @@ def read_from_snowflake(engine):
     return df
 
 def write_to_snowflake(engine, table_name):
-    # Escribir en una tabla Snowflake
-    from snowflake.connector.pandas_tools import pd_writer
-    # ¿Qué hacer si la tabla ya existe? replace, append, o fail?
-    if_exists = 'replace'
+    # ¿Qué hacer si la tabla ya existe: replace, append, o fail?
+    if_exists = 'append'
     data = {
-        'ORDER_ID': ['O001', 'O002', 'O003'],
-        'AMOUNT': [11111, 22222, 33333],
-        'PROFIT': [200, 300, 400],
-        'QUANTITY': [10, 15, 20],
-        'CATEGORY': ['Electronics', 'Furniture', 'Office Supplies'],
-        'SUBCATEGORY': ['Phones', 'Chairs', 'Paper']
+        'ID': [204, 205, 206],
+        'FIRST_NAME': ['Alice', 'Bob', 'Charlie'],
+        'LAST_NAME': ['Johnson', 'Smith', 'Brown'],
+        'EMAIL': ['alice.johnson@example.com', 'bob.smith@example.com', 'charlie.brown@example.com'],
+        'LOCATION': ['Madrid', 'Barcelona', 'Valencia'],
+        'DEPARTMENT': ['Human Resources', 'Marketing', 'Services']
     }
     df = pd.DataFrame(data)
     with engine.connect() as con:
@@ -51,7 +51,7 @@ def write_to_snowflake(engine, table_name):
 def main():
     engine = connect_to_snowflake(warehouse='COMPUTE_WH', database='PRIMERABBDD', schema='PRIMERESQUEMA', role='ACCOUNTADMIN')
     read_from_snowflake(engine)
-    write_to_snowflake(engine, table_name='orders')
+    write_to_snowflake(engine, table_name='employees')
 
 if __name__ == "__main__":
     main()
